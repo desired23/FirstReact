@@ -43,7 +43,7 @@ const ProductManagementPage = (props:IProps) => {
             title: 'Product Image',
             dataIndex: 'images',
             key: 'image',
-            render: (text) => <ImageList images={text} />
+            render: (text) => <ImageList images={text || [""]} />
           },
           {
             title: 'Product Category',
