@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react'
 import { IProduct } from './interfaces/product';
 import { addProduct, deleteProduct, getAllProduct, updateProduct } from './utils/api/product'
 import { ICategory } from './interfaces/category'
-import { getAllCategory } from './utils/api/category'
+import { addCategory, delCategory, editCategory, getAllCategory } from './utils/api/category'
+import CategoryManagement from './componets/Pages/admin/category/CategoryManagement'
 
 
 function App() {
@@ -27,7 +28,7 @@ function App() {
     getAllCategory().then(({data})=>setCategories(data))
   }, [])
 
-  //function
+  //product function
   const onHandleRemove = (id:string)=> {
     deleteProduct(id).then(()=>setProducts(products.filter((item:IProduct)=>item.id!==id)))
   }
@@ -36,6 +37,16 @@ function App() {
   }
   const onHandleUpdate = (product:IProduct)=>{
     updateProduct(product).then(()=>getAllProduct().then(({data})=>setProducts(data)))
+  }
+  //category function
+  const onHandleRemoveCategory = (id:string)=> {
+    delCategory(id).then(()=>setCategories(categories.filter((item:ICategory)=>item.id!==id)))
+  }
+  const onHandleAddCategory = (category:ICategory)=>{
+    addCategory(category).then(()=>getAllCategory().then(({data})=>setCategories(data)))
+  }
+  const onHandleUpdateCategory = (category:ICategory)=>{
+    editCategory(category).then(()=>getAllCategory().then(({data})=>setCategories(data)))
   }
   return (
     <Routes>
@@ -58,6 +69,11 @@ function App() {
         <Route index element={<ProductManagementPage products={products} onHandleRemove={onHandleRemove}  />} />
         <Route path='add' element={<AddProductPage categories={categories} onAdd={onHandleAdd} />} />
         <Route path=':id/update' element={<UpdateProductPage products={products} categories={categories} onUpdate={onHandleUpdate}/>} />
+      </Route>
+      <Route path='categories'>
+        <Route index element={<CategoryManagement categories={categories} onHandleRemove={onHandleRemoveCategory}  />} />
+        <Route path='add' element={<AddProductPage categories={categories} onAdd={onHandleAddCategory} />} />
+        <Route path=':id/update' element={<UpdateProductPage categories={categories}  onUpdate={onHandleUpdateCategory}/>} />
       </Route>
     </Route>
   </Routes>

@@ -78,8 +78,6 @@ const AddProduct = (props: IProps) => {
           urls.push(response.data.secure_url);
         }
       setUrls(urls)
-        console.log(urls);
-        return urls;
       };
     return (
         <div>
