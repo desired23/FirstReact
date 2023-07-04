@@ -13,19 +13,15 @@ interface IProps {
   onUpdate: (product: IProduct) => void
 }
 const UpdateProduct = (props: IProps) => {
-
   const [urls, setUrls] = useState<string[]>([])
 
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState<IProduct>()
-  const [existingImages, setExistingImages] = useState<string[]>([]);
   useEffect(() => {
     setProduct(props.products.find((product: IProduct) => product.id == String(id)))
   }, [props])
-  useEffect(() => {
-    if (product != undefined) setExistingImages(product?.images)
-  }, [product])
+
   useEffect(() => { // khi biến product thay đổi thì sẽ chạy useEffect này
     setFields() // gọi hàm setFields để set lại giá trị cho các input
   }, [product])
@@ -39,17 +35,27 @@ const UpdateProduct = (props: IProps) => {
       title: product?.title,
       description: product?.description,
       github: product?.github,
-      images: [],
+      images: product?.images.map((url) => ({
+        uid: url, // Sử dụng URL làm uid để đảm bảo mỗi đối tượng có một giá trị duy nhất
+        name: url, // Sử dụng URL làm tên hiển thị
+        url: url, // Sử dụng URL làm URL hiển thị
+      })),
       categoryId: product?.categoryId
     })
   }
   const onFinish = (values: any) => {
+
+
+
     props.onUpdate({
-      ...values,
-      images: urls
+        ...values,
+        images: urls
     });
-    navigate('/admin/products')
-  }
+
+    console.log(values);
+
+    navigate('/admin/products');
+};
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
@@ -62,7 +68,6 @@ const UpdateProduct = (props: IProps) => {
   };
   const handleUpload = async (ev: any) => {
     const e = await normFile(ev)
-    console.log(e);
     const CLOUD_NAME = "dqzopvk2t";
     const PRESET_NAME = "ph26019";
     const urls: string[] = [];
@@ -152,7 +157,7 @@ const UpdateProduct = (props: IProps) => {
           </Select>
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit"  >
             Update Product
           </Button>
         </Form.Item>

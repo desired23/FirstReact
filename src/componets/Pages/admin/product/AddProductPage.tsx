@@ -28,57 +28,65 @@ interface IProps {
     onAdd: (product: IProduct) => void
 }
 const AddProduct = (props: IProps) => {
+    const [isUploading, setIsUploading] = useState(false);
+
     const [urls, setUrls] = useState<string[]>([])
     console.log(props.categories)
     const navigate = useNavigate()
     const onFinish = (values: any) => {
-        
-        props.onAdd(
-            {
-                ...values,
-                images: urls
-            }
-        );
+
+        if (isUploading) {
+            // Hiển thị thông báo lỗi cho người dùng
+            console.log("Please wait for the image upload to complete.");
+            return;
+        } 
+
+        props.onAdd({
+            ...values,
+            images: urls
+        });
+
         console.log(values);
-        navigate('/admin/products')
-    }
+
+        navigate('/admin/products');
+    };
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
     };
-    function normFile(e:any) {
+    function normFile(e: any) {
         if (Array.isArray(e)) {
-          return e;
+            return e;
         }
         return e && e.fileList;
-      }
-    
+    }
+
     const handleUpload = async (ev: any) => {
-         const e =await normFile(ev)
-         console.log(e);
-        console.log(e);
+        setIsUploading(true);
+        const e = await normFile(ev)
         const CLOUD_NAME = "dqzopvk2t";
         const PRESET_NAME = "ph26019";
         const urls: string[] = [];
         const FOLDER_NAME = "ecma";
         const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
-      
+
         const formData = new FormData();
         formData.append("upload_preset", PRESET_NAME);
         formData.append("folder", FOLDER_NAME);
-      
+
         for (const file of e) {
-          formData.append("file", file.originFileObj);
-      
-          const response = await axios.post(api, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          });
-      
-          urls.push(response.data.secure_url);
+            formData.append("file", file.originFileObj);
+
+            const response = await axios.post(api, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+
+            urls.push(response.data.secure_url);
         }
-      setUrls(urls)
-      };
+        setIsUploading(false)
+        setUrls(urls)
+    };
     return (
         <div>
             <Form
@@ -116,14 +124,14 @@ const AddProduct = (props: IProps) => {
                 </Form.Item>
 
                 <Form.Item
-                
+
                     name="images"
                     label="Upload"
                     valuePropName="fileList"
                     getValueFromEvent={normFile}
-                    
+
                 >
-                    <Upload beforeUpload={()=>false} name="logo" onChange={handleUpload}  listType="picture" multiple > 
+                    <Upload beforeUpload={() => false} name="logo" onChange={handleUpload} listType="picture" multiple >
                         <Button icon={<UploadOutlined />}>Click to upload</Button>
                     </Upload>
                 </Form.Item>
@@ -143,7 +151,7 @@ const AddProduct = (props: IProps) => {
 
 
                 <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-                    <Button type="primary" htmlType="submit">
+                    <Button type="primary" htmlType="submit" disabled={isUploading}>
                         Submit
                     </Button>
                 </Form.Item>
