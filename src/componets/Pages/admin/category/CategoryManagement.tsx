@@ -53,7 +53,7 @@ const CategoryManagement = (props:IProps) => {
 
     return (
         <div>
-            <Button type='primary'><Link to={'/admin/categories/add'}>Add New Product</Link></Button>
+            <Button type='primary'><Link to={'/admin/categories/add'}>Add New Category</Link></Button>
             <Table columns={columns} dataSource={data} pagination={{ pageSize: 5 }} />
         </div>
     )

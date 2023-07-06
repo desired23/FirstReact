@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { Button, Checkbox, Form, Input, Select, Upload, UploadFile } from 'antd';
+import { Button, Form, Input, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { IProduct } from '../../../../interfaces/product';
 import { ICategory } from '../../../../interfaces/category';
@@ -18,9 +18,9 @@ const UpdateProduct = (props: IProps) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState<IProduct>()
-  useEffect(() => {
+  useEffect(() => {  
     setProduct(props.products.find((product: IProduct) => product.id == String(id)))
-  }, [props])
+  }, [props, id])
 
   useEffect(() => { // khi biến product thay đổi thì sẽ chạy useEffect này
     setFields() // gọi hàm setFields để set lại giá trị cho các input
@@ -40,7 +40,7 @@ const UpdateProduct = (props: IProps) => {
         name: url, // Sử dụng URL làm tên hiển thị
         url: url, // Sử dụng URL làm URL hiển thị
       })),
-      categoryId: product?.categoryId
+      categoryId: product?.categoryId || []
     })
   }
   const onFinish = (values: any) => {
@@ -56,9 +56,7 @@ const UpdateProduct = (props: IProps) => {
 
     navigate('/admin/products');
 };
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
+
   const normFile = (e: any) => {
     console.log('Upload event:', e);
     if (Array.isArray(e)) {
@@ -150,7 +148,7 @@ const UpdateProduct = (props: IProps) => {
           name="categoryId"
           rules={[{ required: true, message: 'Please select your Product Category!' }]}
         >
-          <Select>
+          <Select  mode='multiple'>
             {props.categories.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
 
 

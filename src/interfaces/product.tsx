@@ -5,5 +5,5 @@ export interface IProduct {
     description: string,
     github:string,
     images: string[],
-    categoryId:string
+    categoryId:string[]
 }

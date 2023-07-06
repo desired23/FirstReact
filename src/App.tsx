@@ -14,6 +14,8 @@ import { addProduct, deleteProduct, getAllProduct, updateProduct } from './utils
 import { ICategory } from './interfaces/category'
 import { addCategory, delCategory, editCategory, getAllCategory } from './utils/api/category'
 import CategoryManagement from './componets/Pages/admin/category/CategoryManagement'
+import AddCategory from './componets/Pages/admin/category/AddCategory'
+import UpdateCategory from './componets/Pages/admin/category/UpdateCategory'
 
 
 function App() {
@@ -66,14 +68,14 @@ function App() {
     <Route path='/admin'>
       <Route index element={<DashBoard />} />
       <Route path='products'>
-        <Route index element={<ProductManagementPage products={products} onHandleRemove={onHandleRemove}  />} />
+        <Route index element={<ProductManagementPage categories={categories} products={products} onHandleRemove={onHandleRemove}  />} />
         <Route path='add' element={<AddProductPage categories={categories} onAdd={onHandleAdd} />} />
         <Route path=':id/update' element={<UpdateProductPage products={products} categories={categories} onUpdate={onHandleUpdate}/>} />
       </Route>
       <Route path='categories'>
         <Route index element={<CategoryManagement categories={categories} onHandleRemove={onHandleRemoveCategory}  />} />
-        <Route path='add' element={<AddProductPage categories={categories} onAdd={onHandleAddCategory} />} />
-        <Route path=':id/update' element={<UpdateProductPage categories={categories}  onUpdate={onHandleUpdateCategory}/>} />
+        <Route path='add' element={<AddCategory  onAdd={onHandleAddCategory} />} />
+        <Route path=':id/update' element={<UpdateCategory categories={categories}  onUpdate={onHandleUpdateCategory}/>} />
       </Route>
     </Route>
   </Routes>

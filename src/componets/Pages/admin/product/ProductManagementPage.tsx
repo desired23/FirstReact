@@ -5,22 +5,25 @@ import type { ColumnsType } from 'antd/es/table';
 import { Link } from 'react-router-dom'
 import { IProduct } from '../../../../interfaces/product';
 import ImageList from '../../../Common/product';
+import { ICategory } from '../../../../interfaces/category';
+import HandleCateId from '../../../Common/HandleCateId';
 interface DataType {
     key: string | number;
     id: string;
     title: string;
     description: string;
-    github:string,
+    github: string,
     images: string[],
-    categoryId:string
+    categoryId: string[]
 
 }
 interface IProps {
+    categories: ICategory[],
     products: IProduct[],
     onHandleRemove: (id: string) => void
 }
-const ProductManagementPage = (props:IProps) => {
-    const removeProduct = (id:string) => props.onHandleRemove(id)
+const ProductManagementPage = (props: IProps) => {
+    const removeProduct = (id: string) => props.onHandleRemove(id)
 
     const columns: ColumnsType<DataType> = [
         {
@@ -44,13 +47,15 @@ const ProductManagementPage = (props:IProps) => {
             dataIndex: 'images',
             key: 'image',
             render: (text) => <ImageList images={text || [""]} />
-          },
-          {
+        },
+        {
             title: 'Product Category',
             dataIndex: 'categoryId',
             key: 'categoryId',
-            render: (text) => <div>{text}</div> 
-          },
+            render: (text) => <HandleCateId categories={props.categories} cates={text }/>
+
+
+        },
         {
             title: 'Action',
             key: 'action',

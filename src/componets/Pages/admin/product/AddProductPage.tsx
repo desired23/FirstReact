@@ -34,7 +34,7 @@ const AddProduct = (props: IProps) => {
     console.log(props.categories)
     const navigate = useNavigate()
     const onFinish = (values: any) => {
-
+        console.log(values);
         if (isUploading) {
             // Hiển thị thông báo lỗi cho người dùng
             console.log("Please wait for the image upload to complete.");
@@ -141,7 +141,7 @@ const AddProduct = (props: IProps) => {
                     name="categoryId"
                     rules={[{ required: true, message: 'Please select your Product Category!' }]}
                 >
-                    <Select>
+                    <Select mode='multiple'>
                         {props.categories.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
 
 
