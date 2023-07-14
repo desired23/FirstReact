@@ -3,9 +3,9 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Form, Input, Select, Upload } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
-import { IProduct } from '../../../../interfaces/product';
 import { ICategory } from '../../../../interfaces/category';
 import axios from 'axios';
+import { IProduct } from '../../../../interfaces/product';
 
 interface IProps {
   categories: ICategory[]
@@ -14,7 +14,6 @@ interface IProps {
 }
 const UpdateProduct = (props: IProps) => {
   const [urls, setUrls] = useState<string[]>([])
-
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState<IProduct>()
@@ -24,13 +23,14 @@ const UpdateProduct = (props: IProps) => {
 
   useEffect(() => { // khi biến product thay đổi thì sẽ chạy useEffect này
     setFields() // gọi hàm setFields để set lại giá trị cho các input
+    
   }, [product])
   const [form] = Form.useForm();
   // khởi tạo một instance của Form và gán vào biến form
   // Instance của form là một đối tượng được tạo ra bởi Ant Design để thực hiện các chức năng của form trong React
 
-  const setFields = () => {// hàm này để set lại giá trị cho các input
-    form.setFieldsValue({ // gọi hàm setFieldsValue của instance form để set lại giá trị cho các input dựa vào giá trị của biến product
+  const setFields = () => {
+    form.setFieldsValue({
       id: product?.id,
       title: product?.title,
       description: product?.description,
@@ -40,13 +40,10 @@ const UpdateProduct = (props: IProps) => {
         name: url, // Sử dụng URL làm tên hiển thị
         url: url, // Sử dụng URL làm URL hiển thị
       })),
-      categoryId: product?.categoryId || []
-    })
-  }
+      categoryId: product?.categoryId || [],
+    });
+  };
   const onFinish = (values: any) => {
-
-
-
     props.onUpdate({
         ...values,
         images: urls
@@ -64,31 +61,38 @@ const UpdateProduct = (props: IProps) => {
     }
     return e?.fileList;
   };
-  const handleUpload = async (ev: any) => {
-    const e = await normFile(ev)
-    const CLOUD_NAME = "dqzopvk2t";
-    const PRESET_NAME = "ph26019";
-    const urls: string[] = [];
-    const FOLDER_NAME = "ecma";
-    const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+    const handleUpload = async (ev: any) => {
+      console.log('Upload event:', ev);
+      const e = await normFile(ev)
+      console.log("e",e);
+      const CLOUD_NAME = "dqzopvk2t";
+      const PRESET_NAME = "ph26019";
+      const urls: string[] = [];
+      const FOLDER_NAME = "ecma";
+      const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
-    const formData = new FormData();
-    formData.append("upload_preset", PRESET_NAME);
-    formData.append("folder", FOLDER_NAME);
+      const formData = new FormData();
+      formData.append("upload_preset", PRESET_NAME);
+      formData.append("folder", FOLDER_NAME);
 
-    for (const file of e) {
-      formData.append("file", file.originFileObj);
+      for (const file of e) {
+        if (file.originFileObj){
+                  const fileToUpload = file.originFileObj; // Lấy đối tượng tệp từ e.fileList
+      
+        formData.append("file", fileToUpload);
+      
+        const response = await axios.post(api, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+      
+        urls.push(response.data.secure_url);
+      } else urls.push(file?.url)
+        }
 
-      const response = await axios.post(api, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
-      urls.push(response.data.secure_url);
-    }
-    setUrls(urls)
-  };
+      setUrls(urls)
+    };
   return (
     <div>
       <Form

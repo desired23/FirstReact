@@ -5,6 +5,7 @@ interface ImageListProps {
 }
 
 function ImageList({ images }: ImageListProps) {
+  console.log(images);
   return (
     <div>
       {images.map((imageUrl, index) => (
