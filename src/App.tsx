@@ -28,7 +28,7 @@ import { getMyData } from './utils/api/data'
 
 
 function App() {
-  const [info, setInfo] = useState<IData>()
+  const [info, setInfo] = useState<IData>(null!)
   const [products, setProducts] = useState<IProduct[]>([])
   const [categories, setCategories] = useState<ICategory[]>([])
 
@@ -88,7 +88,7 @@ function App() {
           <Route path=':id/update' element={<UpdateCategory categories={categories} onUpdate={onHandleUpdateCategory} />} />
         </Route>
         <Route path='info'>
-          <Route index element={<ShowInfo />} />
+        <Route index element={<ShowInfo  info={info}/>} />
         </Route>
       </Route>
     </Routes>
