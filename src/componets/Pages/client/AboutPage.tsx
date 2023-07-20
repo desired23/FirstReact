@@ -1,4 +1,3 @@
-import React from 'react'
 
 const AboutPage = () => {
   const templateHTML = `    <!--================ Start Banner Area =================-->

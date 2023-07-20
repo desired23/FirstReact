@@ -1,18 +1,13 @@
 
-import React, { useState } from 'react'
+// import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
 import {
     Button,
     Form,
-    Select,
-    Upload,
     Input
 } from 'antd';
 // import { Button, Checkbox, Form, Input, Select } from 'antd';
 import { ICategory } from '../../../../interfaces/category';
-import { IProduct } from '../../../../interfaces/product';
-import axios from 'axios';
 
 interface IProps {
     onAdd: (category: ICategory) => void

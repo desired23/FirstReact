@@ -1,4 +1,3 @@
-import React from 'react'
 import { ICategory } from '../../../interfaces/category'
 import { IProduct } from '../../../interfaces/product'
 import { useEffect } from 'react';

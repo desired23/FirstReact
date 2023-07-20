@@ -1,20 +1,14 @@
 
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { InboxOutlined, UploadOutlined } from '@ant-design/icons';
+import {  UploadOutlined } from '@ant-design/icons';
 import {
     Button,
-    Checkbox,
-    Col,
+
     Form,
-    InputNumber,
-    Radio,
-    Rate,
-    Row,
+
     Select,
-    Slider,
-    Space,
-    Switch,
+
     Upload,
     Input
 } from 'antd';

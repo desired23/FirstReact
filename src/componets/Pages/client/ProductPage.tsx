@@ -1,4 +1,3 @@
-import React from 'react'
 import { IProduct } from '../../../interfaces/product'
 
 interface IProps {

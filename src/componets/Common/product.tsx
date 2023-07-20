@@ -1,4 +1,3 @@
-import React from 'react';
 
 interface ImageListProps {
   images: string[]; // Chỉ định kiểu dữ liệu là một mảng các chuỗi

@@ -1,4 +1,3 @@
-import React from 'react'
 import { ICategory } from '../../interfaces/category';
 interface IPropsHandleCateId {
     categories: ICategory[];
