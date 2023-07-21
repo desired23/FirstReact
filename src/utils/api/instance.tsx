@@ -1,5 +1,5 @@
 import axios from "axios";
 const instance = axios.create({
-    baseURL: "https://my-json-server.typicode.com/desired23/FirstReact",
+    baseURL: "http://localhost:3000",
 })
 export default instance;
