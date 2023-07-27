@@ -12,9 +12,10 @@ const ProductDetailPage = (props:IProps) => {
   const { id } = useParams()
   const [product, setProduct] = useState<IProduct>()
   useEffect(() => {  
-    setProduct(props.products.find((product: IProduct) => product.id == String(id)))
+    setProduct(props.products.find((product: IProduct) => product._id == String(id)))
   }, [props, id])
-  const categories = props.categories.filter(category => product?.categoryId.includes(category.id));
+  const productCate =  product?.categoryId.map(item=>item._id)
+  const categories = props.categories.filter(category => productCate?.includes(category._id));
   return (
     <div>
       {/* Start Banner Area */}
@@ -55,7 +56,7 @@ const ProductDetailPage = (props:IProps) => {
           <li>
   <span>Categories</span>: 
   {categories.map(category => (
-    <a className='btn btn-outline-primary' key={category.id}>  {category.name}</a>
+    <a className='btn btn-outline-primary' key={category._id}>  {category.name}</a>
   ))}
 </li>
         </ul>

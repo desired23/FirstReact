@@ -5,17 +5,20 @@ import { Link } from 'react-router-dom'
 import { ICategory } from '../../../../interfaces/category';
 interface DataType {
     key: string | number;
-    id: string;
+    _id: string
     name: string;
     description: string;
+    products:string[]
 
 }
 interface IProps {
     categories: ICategory[],
-    onHandleRemove: (id: string) => void
+    onHandleRemove: (_id: string) => void
 }
 const CategoryManagement = (props:IProps) => {
-    const removeCategory = (id:string) => props.onHandleRemove(id)
+    console.log(props.categories);
+    
+    const removeCategory = (_id:string) => props.onHandleRemove(_id)
 
     const columns: ColumnsType<DataType> = [
         {
@@ -29,6 +32,13 @@ const CategoryManagement = (props:IProps) => {
             dataIndex: 'description',
             key: 'description',
         },
+        {
+            title: 'Products',
+            dataIndex: 'products',
+            key: 'products',
+            render: (text) => <a>{text} </a>,
+
+        },
        
         {
             title: 'Action',
@@ -36,17 +46,23 @@ const CategoryManagement = (props:IProps) => {
             render: (record) => (
 
                 <Space size="middle">
-                    <Button type="primary" style={{ backgroundColor: 'red' }} onClick={() => removeCategory(record.id)}>Remove</Button>
-                    <Button type="primary" ><Link to={`/admin/categories/${record.id}/update`}>Update</Link></Button>
+                    <Button type="primary" style={{ backgroundColor: 'red' }} onClick={() => {
+                        console.log(record);
+                        removeCategory(record?._id)}}>Remove</Button>
+                    <Button type="primary" ><Link to={`/admin/categories/${record._id}/update`}>Update</Link></Button>
                 </Space>
             ),
         },
     ];
 
-    const data: DataType[] = props.categories.map((item: ICategory) => {
+    const data: DataType[] = props.categories?.map((item: ICategory,index:number) => {
+        console.log(item._id);
         return {
-            key: item.id,
-            ...item
+            key: index,
+            _id: item._id,
+            name: item.name, 
+            description: item.description, 
+            products: item.products
         }
     })
 

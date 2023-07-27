@@ -6,30 +6,31 @@ import { IProduct } from '../../../../interfaces/product';
 import ImageList from '../../../Common/product';
 import { ICategory } from '../../../../interfaces/category';
 import HandleCateId from '../../../Common/HandleCateId';
+
 interface DataType {
     key: string | number;
-    id: string;
+    _id: string;
     title: string;
     description: string;
     github: string,
     images: string[],
-    categoryId: string[]
+    categoryId: ICategory[]
 
 }
 interface IProps {
     categories: ICategory[],
     products: IProduct[],
-    onHandleRemove: (id: string) => void
+    onHandleRemove: (_id: string) => void
 }
 const ProductManagementPage = (props: IProps) => {
-    const removeProduct = (id: string) => props.onHandleRemove(id)
+    const removeProduct = (_id: string) => props.onHandleRemove(_id)
 
     const columns: ColumnsType<DataType> = [
         {
             title: 'ProductTitle',
             dataIndex: 'title',
             key: 'title',
-            render: (text) => <a>{text}</a>,
+            render: (text, record) => <Link to={`/products/${record._id}`} >{text}</Link>,
         },
         {
             title: 'Product description',
@@ -51,7 +52,7 @@ const ProductManagementPage = (props: IProps) => {
             title: 'Product Category',
             dataIndex: 'categoryId',
             key: 'categoryId',
-            render: (text) => <HandleCateId categories={props.categories} cates={text }/>
+            render: (text) => <HandleCateId categories={props.categories} cates={text}/>
 
 
         },
@@ -61,8 +62,8 @@ const ProductManagementPage = (props: IProps) => {
             render: (record) => (
 
                 <Space size="middle">
-                    <Button type="primary" style={{ backgroundColor: 'red' }} onClick={() => removeProduct(record.id)}>Remove</Button>
-                    <Button type="primary" ><Link to={`/admin/products/${record.id}/update`}>Update</Link></Button>
+                    <Button type="primary" style={{ backgroundColor: 'red' }} onClick={() => removeProduct(record._id)}>Remove</Button>
+                    <Button type="primary" ><Link to={`/admin/products/${record._id}/update`}>Update</Link></Button>
                 </Space>
             ),
         },
@@ -70,7 +71,7 @@ const ProductManagementPage = (props: IProps) => {
 
     const data: DataType[] = props.products.map((item: IProduct) => {
         return {
-            key: item.id,
+            key: item._id,
             ...item
         }
     })

@@ -1,6 +1,6 @@
 
 
-    export interface ICategory{
-       id:string, name:string, description:string
-        
-    }
+export interface ICategory {
+   _id: string, name: string, description: string, products: string[], createdAt: string, updatedAt: string
+
+}

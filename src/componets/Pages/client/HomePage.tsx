@@ -240,7 +240,7 @@ const HomePage = (props:IProps) => {
                         style={{ width: '100%', height: 'auto' }}
                       />
                       <div className="overlay"></div>
-                      <a href={`/products/${product.id}`}  className="img-gal">
+                      <a href={`/products/${product._id}`}  className="img-gal">
                         <div className="icon">
                           <span className="lnr lnr-cross"></span>
                         </div>
@@ -248,7 +248,7 @@ const HomePage = (props:IProps) => {
                     </div>
                     <div className="short_info">
                       <h4>
-                        <a href={`/products/${product.id}`} className="product-title">
+                        <a href={`/products/${product._id}`} className="product-title">
                           {product.title}
                         </a>
                       </h4>

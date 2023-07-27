@@ -25,6 +25,8 @@ import PostDetailPage from './componets/Pages/client/PostDetailPage'
 import ShowInfo from './componets/Pages/admin/info/ShowInfo'
 import { IData } from './interfaces/data'
 import { getMyData } from './utils/api/data'
+import Register from './componets/Pages/Register'
+import Login from './componets/Pages/Login'
 
 
 function App() {
@@ -33,18 +35,22 @@ function App() {
   const [categories, setCategories] = useState<ICategory[]>([])
 
   useEffect(() => {
-    getAllProduct().then(({ data }) => setProducts(data))
+    getAllProduct().then(({ data }) => {const unzip = data;setProducts(unzip)})
   }, [])
 
   useEffect(() => {
-    getAllCategory().then(({ data }) => setCategories(data))
+    getAllCategory().then(({ data }) =>{
+      const unzip = data.data;
+      console.log(unzip);
+      setCategories(unzip)})
   }, [])
+  
   useEffect(() => {
-    getMyData().then(({data})=> setInfo(data))
+    getMyData().then(({data})=> {const unzip = data.data;setInfo(unzip)})
   },[])
   //product function
-  const onHandleRemove = (id: string) => {
-    deleteProduct(id).then(() => setProducts(products.filter((item: IProduct) => item.id !== id)))
+  const onHandleRemove = (_id: string) => {
+    deleteProduct(_id).then(() => setProducts(products.filter((item: IProduct) => item._id !== _id)))
   }
   const onHandleAdd = (product: IProduct) => {
     addProduct(product).then(() => getAllProduct().then(({ data }) => setProducts(data)))
@@ -53,8 +59,8 @@ function App() {
     updateProduct(product).then(() => getAllProduct().then(({ data }) => setProducts(data)))
   }
   //category function
-  const onHandleRemoveCategory = (id: string) => {
-    delCategory(id).then(() => setCategories(categories.filter((item: ICategory) => item.id !== id)))
+  const onHandleRemoveCategory = (_id: string) => {
+    delCategory(_id).then(() => setCategories(categories.filter((item: ICategory) => item._id !== _id)))
   }
   const onHandleAddCategory = (category: ICategory) => {
     addCategory(category).then(() => getAllCategory().then(({ data }) => setCategories(data)))
@@ -62,6 +68,9 @@ function App() {
   const onHandleUpdateCategory = (category: ICategory) => {
     editCategory(category).then(() => getAllCategory().then(({ data }) => setCategories(data)))
   }
+  // console.log(products);
+  // console.log(categories);
+
   return (
     <Routes>
       <Route path='/' >
@@ -91,6 +100,9 @@ function App() {
         <Route index element={<ShowInfo  info={info}/>} />
         </Route>
       </Route>
+      <Route path='register' element={<Register/>}/>
+      <Route path='signin' element={<Login/>}/>
+
     </Routes>
   )
 }

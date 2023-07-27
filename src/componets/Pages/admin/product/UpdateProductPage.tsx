@@ -13,13 +13,15 @@ interface IProps {
   onUpdate: (product: IProduct) => void
 }
 const UpdateProduct = (props: IProps) => {
+  console.log(props.categories);
   const [urls, setUrls] = useState<string[]>([])
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState<IProduct>()
   useEffect(() => {  
-    setProduct(props.products.find((product: IProduct) => product.id == String(id)))
+    setProduct(props.products.find((product: IProduct) => product._id == String(id)))
   }, [props, id])
+  console.log(product);
 
   useEffect(() => { // khi biến product thay đổi thì sẽ chạy useEffect này
     setFields() // gọi hàm setFields để set lại giá trị cho các input
@@ -31,7 +33,7 @@ const UpdateProduct = (props: IProps) => {
 
   const setFields = () => {
     form.setFieldsValue({
-      id: product?.id,
+      _id: product?._id,
       title: product?.title,
       description: product?.description,
       github: product?.github,
@@ -40,7 +42,7 @@ const UpdateProduct = (props: IProps) => {
         name: url, // Sử dụng URL làm tên hiển thị
         url: url, // Sử dụng URL làm URL hiển thị
       })),
-      categoryId: product?.categoryId || [],
+      categoryId: product?.categoryId.map((category: ICategory) => category._id),
     });
   };
   const onFinish = (values: any) => {
@@ -102,7 +104,7 @@ const UpdateProduct = (props: IProps) => {
       >
         <Form.Item
           label="Product id"
-          name="id"
+          name="_id"
           hidden
           
         >
@@ -153,7 +155,9 @@ const UpdateProduct = (props: IProps) => {
           rules={[{ required: true, message: 'Please select your Product Category!' }]}
         >
           <Select  mode='multiple'>
-            {props.categories.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+            {props.categories.map((item, index) => {
+              return <Select.Option key={index} value={item._id}>{item.name}</Select.Option>
+            })}
 
 
           </Select>

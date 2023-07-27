@@ -22,7 +22,7 @@ const UpdateCategory = (props: IProps) => {
     console.log(props.categories)
     const navigate = useNavigate()
     useEffect(() => {
-        setCategory(props.categories.find((category: ICategory) => category.id == String(id)))
+        setCategory(props.categories.find((category: ICategory) => category._id == String(id)))
     }
         , [props, id])
 
@@ -35,7 +35,7 @@ const UpdateCategory = (props: IProps) => {
 
     const setFields = () => {// hàm này để set lại giá trị cho các input
         form.setFieldsValue({ // gọi hàm setFieldsValue của instance form để set lại giá trị cho các input dựa vào giá trị của biến product
-            id: category?.id,
+            id: category?._id,
             name: category?.name,
             description: category?.description,
         })

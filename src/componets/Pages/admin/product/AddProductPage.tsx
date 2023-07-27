@@ -136,7 +136,7 @@ const AddProduct = (props: IProps) => {
                     rules={[{ required: true, message: 'Please select your Product Category!' }]}
                 >
                     <Select mode='multiple'>
-                        {props.categories.map(item => <Select.Option key={item.id} value={item.id}>{item.name}</Select.Option>)}
+                        {props.categories.map(item => <Select.Option key={item._id} value={item._id}>{item.name}</Select.Option>)}
 
 
                     </Select>
