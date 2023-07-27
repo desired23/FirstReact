@@ -1,5 +1,4 @@
 
-import { ICategory } from "../../interfaces/category"
 import { IRegistrationData } from "../../interfaces/user"
 import instance from "./instance"
 

@@ -1,5 +1,5 @@
 import { Button, Form, Input } from "antd"
-import { signin, signup } from "../../utils/api/auth";
+import { signin } from "../../utils/api/auth";
 
 
 
