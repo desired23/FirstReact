@@ -57,8 +57,11 @@ const UpdateProduct = (props: IProps) => {
       name: string
     }[]
   }) => {
-    const url = values.images.map(item => item.url)
-    urls.push(...url)
+    if (urls.length == 0){
+      const url = values.images.map(item => item.url)
+      urls.push(...url)
+    }
+
     props.onUpdate({
       ...values,
       images: [...urls]

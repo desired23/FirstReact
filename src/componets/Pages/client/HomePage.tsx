@@ -25,7 +25,7 @@ const HomePage = (props:IProps) => {
               </div>
               <div className="col-lg-5">
                 <div className="home_right_img">
-                  <img className="" src="/src/assets/img/banner/home-right.png" alt="" />
+                  <img className="" src="https://res.cloudinary.com/dqzopvk2t/image/upload/v1689250096/ecma/ua98iyklgalwkpfaoedd.png" alt="" />
                 </div>
               </div>
             </div>
