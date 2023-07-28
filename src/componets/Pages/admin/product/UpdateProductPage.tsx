@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { Button, Form, Input, Select, Upload } from 'antd';
@@ -18,14 +18,14 @@ const UpdateProduct = (props: IProps) => {
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState<IProduct>()
-  useEffect(() => {  
+  useEffect(() => {
     setProduct(props.products.find((product: IProduct) => product._id == String(id)))
   }, [props, id])
   console.log(product);
 
   useEffect(() => { // khi biến product thay đổi thì sẽ chạy useEffect này
     setFields() // gọi hàm setFields để set lại giá trị cho các input
-    
+
   }, [product])
   const [form] = Form.useForm();
   // khởi tạo một instance của Form và gán vào biến form
@@ -45,16 +45,29 @@ const UpdateProduct = (props: IProps) => {
       categoryId: product?.categoryId.map((category: ICategory) => category._id),
     });
   };
-  const onFinish = (values: any) => {
+  const onFinish = (values: {
+    _id: string;
+    title: string;
+    description: string;
+    github: string,
+    categoryId: ICategory[]
+    images: {
+      url: string,
+      uid: string,
+      name: string
+    }[]
+  }) => {
+    const url = values.images.map(item => item.url)
+    urls.push(...url)
     props.onUpdate({
-        ...values,
-        images: urls
+      ...values,
+      images: [...urls]
     });
 
     console.log(values);
 
     navigate('/admin/products');
-};
+  };
 
   const normFile = (e: any) => {
     console.log('Upload event:', e);
@@ -63,38 +76,38 @@ const UpdateProduct = (props: IProps) => {
     }
     return e?.fileList;
   };
-    const handleUpload = async (ev: any) => {
-      console.log('Upload event:', ev);
-      const e = await normFile(ev)
-      console.log("e",e);
-      const CLOUD_NAME = "dqzopvk2t";
-      const PRESET_NAME = "ph26019";
-      const urls: string[] = [];
-      const FOLDER_NAME = "ecma";
-      const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+  const handleUpload = async (ev: any) => {
+    console.log('Upload event:', ev);
+    const e = await normFile(ev)
+    console.log("e", e);
+    const CLOUD_NAME = "dqzopvk2t";
+    const PRESET_NAME = "ph26019";
+    const urls: string[] = [];
+    const FOLDER_NAME = "ecma";
+    const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
 
-      const formData = new FormData();
-      formData.append("upload_preset", PRESET_NAME);
-      formData.append("folder", FOLDER_NAME);
+    const formData = new FormData();
+    formData.append("upload_preset", PRESET_NAME);
+    formData.append("folder", FOLDER_NAME);
 
-      for (const file of e) {
-        if (file.originFileObj){
-                  const fileToUpload = file.originFileObj; // Lấy đối tượng tệp từ e.fileList
-      
+    for (const file of e) {
+      if (file.originFileObj) {
+        const fileToUpload = file.originFileObj; // Lấy đối tượng tệp từ e.fileList
+
         formData.append("file", fileToUpload);
-      
+
         const response = await axios.post(api, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
         });
-      
+
         urls.push(response.data.secure_url);
       } else urls.push(file?.url)
-        }
+    }
 
-      setUrls(urls)
-    };
+    setUrls(urls)
+  };
   return (
     <div>
       <Form
@@ -106,7 +119,7 @@ const UpdateProduct = (props: IProps) => {
           label="Product id"
           name="_id"
           hidden
-          
+
         >
           <Input />
         </Form.Item>
@@ -154,7 +167,7 @@ const UpdateProduct = (props: IProps) => {
           name="categoryId"
           rules={[{ required: true, message: 'Please select your Product Category!' }]}
         >
-          <Select  mode='multiple'>
+          <Select mode='multiple'>
             {props.categories.map((item, index) => {
               return <Select.Option key={index} value={item._id}>{item.name}</Select.Option>
             })}
